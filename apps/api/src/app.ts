@@ -7,6 +7,7 @@ const app = express();
 import usersRouter from "./modules/users/users.routes";
 import authRouter from "./modules/auth/auth.routes";
 import perdinRouter from "./modules/perdin/perdin.routes";
+import masterRouter from "./modules/master/master.routes";
 import "./common/types"; 
 
 app.use(cors());
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/perdin", perdinRouter);
+app.use("/master", masterRouter);
 
 // Health Check
 app.get("/", (req: Request, res: Response) => {

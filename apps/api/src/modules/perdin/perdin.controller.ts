@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PerdinService } from "./perdin.service";
+import { PerdinStatus } from "../../generated/prisma/client";
 
 export class PerdinController {
   private perdinService: PerdinService;
@@ -20,8 +21,25 @@ export class PerdinController {
 
   getAllPerdins = async (req: Request, res: Response) => {
     try {
-      const perdins = await this.perdinService.getAllPerdins();
+      const user = (req as any).user;
+      const perdins = await this.perdinService.getAllPerdins(user.id, user.role);
       res.status(200).json(perdins);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+
+  updateStatus = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      
+      if (!['APPROVED', 'REJECTED'].includes(status)) {
+        return res.status(400).json({ message: "Invalid status" });
+      }
+
+      const perdin = await this.perdinService.updatePerdinStatus(id, status as PerdinStatus);
+      res.status(200).json(perdin);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }

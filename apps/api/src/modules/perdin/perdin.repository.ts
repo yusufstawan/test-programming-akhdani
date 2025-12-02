@@ -19,8 +19,9 @@ export class PerdinRepository {
     });
   }
 
-  async findAll(): Promise<Perdin[]> {
+  async findAll(where?: Prisma.PerdinWhereInput): Promise<Perdin[]> {
     return prisma.perdin.findMany({
+      where,
       include: {
         user: true,
         originCity: true,
@@ -28,6 +29,18 @@ export class PerdinRepository {
       },
       orderBy: {
         createdAt: 'desc',
+      },
+    });
+  }
+
+  async update(id: string, data: Prisma.PerdinUpdateInput): Promise<Perdin> {
+    return prisma.perdin.update({
+      where: { id },
+      data,
+      include: {
+        user: true,
+        originCity: true,
+        destCity: true,
       },
     });
   }

@@ -12,10 +12,12 @@
     "prisma:migrate": "npx prisma migrate dev --config ./prisma.config.ts",
     "prisma:generate": "npx prisma generate --config ./prisma.config.ts",
     "prisma:reset": "npx prisma migrate reset",
-    "prisma:studio": "npx prisma studio --config ./prisma.config.ts"
+    "prisma:studio": "npx prisma studio --config ./prisma.config.ts",
+    "seed:cities": "tsx prisma/seed-cities.ts",
+    "seed:admin": "tsx prisma/seed-admin.ts"
   },
   "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed-cities.ts"
   },
   "keywords": [],
   "author": "",

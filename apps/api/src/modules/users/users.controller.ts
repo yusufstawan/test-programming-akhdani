@@ -30,4 +30,21 @@ export class UserController {
       next(error);
     }
   };
+
+  updateUserRole = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const { role } = req.body;
+      
+      if (!['ADMIN', 'SDM', 'PEGAWAI'].includes(role)) {
+        res.status(400).json({ message: "Invalid role" });
+        return;
+      }
+
+      const user = await this.userService.updateUserRole(id, role);
+      res.json(user);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

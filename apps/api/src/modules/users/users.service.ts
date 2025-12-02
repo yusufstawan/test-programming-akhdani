@@ -19,4 +19,9 @@ export class UserService {
   async getAllUsers(): Promise<User[]> {
     return this.userRepository.findAll();
   }
+
+  async updateUserRole(id: string, role: string): Promise<User> {
+    // Cast string to Role enum, validation should be done in controller or here
+    return this.userRepository.updateRole(id, role as any); 
+  }
 }

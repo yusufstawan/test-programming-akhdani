@@ -1,5 +1,5 @@
 import { PerdinRepository } from "./perdin.repository";
-import {  Perdin, City } from "../../generated/prisma/client";
+import {  Perdin, City, PerdinStatus } from "../../generated/prisma/client";
 import { prisma } from "../../common/prisma";
 
 export class PerdinService {
@@ -67,9 +67,17 @@ export class PerdinService {
       throw new Error("Origin or Destination City not found");
     }
 
+    if (data.originCityId === data.destCityId) {
+      throw new Error("Origin and Destination City cannot be the same");
+    }
+
     // Calculate Duration
     const start = new Date(data.startDate);
     const end = new Date(data.endDate);
+
+    if (end < start) {
+      throw new Error("End date cannot be before start date");
+    }
     const diffTime = Math.abs(end.getTime() - start.getTime());
     const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Inclusive count
 
@@ -98,7 +106,19 @@ export class PerdinService {
     });
   }
 
-  async getAllPerdins(): Promise<Perdin[]> {
-    return this.perdinRepository.findAll();
+  async getAllPerdins(userId: string, role: string): Promise<Perdin[]> {
+    let where: any = {};
+
+    if (role === 'PEGAWAI') {
+      where = { userId };
+    }
+    // SDM sees all (or pending?) - PRD says "Daftar Perdin untuk Diproses (SDM)".
+    // For now, let SDM see all. We can add status filter later if needed.
+
+    return this.perdinRepository.findAll(where);
+  }
+
+  async updatePerdinStatus(id: string, status: PerdinStatus): Promise<Perdin> {
+    return this.perdinRepository.update(id, { status });
   }
 }

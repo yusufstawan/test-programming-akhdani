@@ -7,5 +7,6 @@ const perdinController = new PerdinController();
 
 router.post("/", authenticateToken, perdinController.createPerdin);
 router.get("/", authenticateToken, perdinController.getAllPerdins);
+router.patch("/:id/status", authenticateToken, perdinController.updateStatus);
 
 export default router;
