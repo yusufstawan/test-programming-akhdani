@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { api } from "@/lib/api"
 import {
   Table,
   TableBody,
@@ -30,12 +31,7 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("token")
-      const res = await fetch("http://localhost:8080/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      const res = await api("/users")
       if (res.ok) {
         const data = await res.json()
         setUsers(data)
@@ -53,13 +49,8 @@ export default function AdminDashboard() {
 
   const handleRoleUpdate = async (id: string, role: string) => {
     try {
-      const token = localStorage.getItem("token")
-      const res = await fetch(`http://localhost:8080/users/${id}/role`, {
+      const res = await api(`/users/${id}/role`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ role }),
       })
 

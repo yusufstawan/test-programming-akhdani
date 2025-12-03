@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { api } from "@/lib/api"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,10 +28,7 @@ export default function CreatePerdinPage() {
 
   useEffect(() => {
     const fetchCities = async () => {
-      const token = localStorage.getItem("token")
-      const res = await fetch("http://localhost:8080/master/cities", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      const res = await api("/master/cities")
       if (res.ok) {
         setCities(await res.json())
       }
@@ -42,13 +40,8 @@ export default function CreatePerdinPage() {
     e.preventDefault()
     setLoading(true)
     try {
-      const token = localStorage.getItem("token")
-      const res = await fetch("http://localhost:8080/perdin", {
+      const res = await api("/perdin", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify(formData),
       })
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { api } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import {
@@ -36,12 +37,7 @@ export default function PegawaiDashboard() {
   useEffect(() => {
     const fetchPerdins = async () => {
       try {
-        const token = localStorage.getItem("token")
-        const res = await fetch("http://localhost:8080/perdin", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        const res = await api("/perdin")
         if (res.ok) {
           const data = await res.json()
           setPerdins(data)

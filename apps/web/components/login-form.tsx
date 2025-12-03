@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { api } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import {
   Field,
@@ -27,11 +28,8 @@ export function LoginForm({
     setLoading(true)
 
     try {
-      const res = await fetch("http://localhost:8080/auth/login", {
+      const res = await api("/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ username, password }),
       })
 
