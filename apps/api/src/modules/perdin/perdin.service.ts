@@ -11,15 +11,15 @@ export class PerdinService {
   }
 
   private calculateDailyAllowance(distance: number, origin: City, dest: City): number {
-    // Rule 1: 0-60 km -> Rp 0
-    if (distance <= 60) {
-      return 0
-    }
-
     // Rule 5: Perdin Luar Negeri -> USD 50
     // Note: Assuming we store as 50 (numeric) for now. UI should handle currency display.
     if (dest.isOverseas) {
       return 50
+    }
+
+    // Rule 1: 0-60 km -> Rp 0
+    if (distance <= 60) {
+      return 0
     }
 
     // Rule 2: >60 km, Same Province -> Rp 200.000

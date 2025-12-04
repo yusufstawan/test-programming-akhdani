@@ -49,7 +49,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
         router.push('/dashboard/pegawai')
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Login failed')
+      setError(err instanceof Error ? err.message : 'Gagal masuk')
     } finally {
       setLoading(false)
     }
@@ -59,9 +59,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
     <form className={cn('flex flex-col gap-6', className)} onSubmit={handleSubmit} {...props}>
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Login to your account</h1>
+          <h1 className="text-2xl font-bold">Masuk ke akun Anda</h1>
           <p className="text-muted-foreground text-sm text-balance">
-            Enter your username below to login to your account
+            Masukkan username Anda di bawah ini untuk masuk
           </p>
         </div>
         {error && <div className="text-red-500 text-sm text-center">{error}</div>}
@@ -89,7 +89,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
         </Field>
         <Field>
           <Button type="submit" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Sedang masuk...' : 'Masuk'}
           </Button>
         </Field>
       </FieldGroup>

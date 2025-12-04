@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
+import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import {
   Table,
   TableBody,
@@ -45,12 +47,13 @@ export default function SDMDashboard() {
 
       if (res.ok) {
         fetchPerdins() // Refresh list
+        toast.success('Status updated successfully')
       } else {
-        alert('Gagal update status')
+        toast.error('Gagal update status')
       }
     } catch (error) {
       console.error(error)
-      alert('Error updating status')
+      toast.error('Error updating status')
     }
   }
 
@@ -60,7 +63,7 @@ export default function SDMDashboard() {
     <AuthGuard allowedRoles={['SDM', 'ADMIN']}>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Approval Perjalanan Dinas</h1>
+          <h1 className="text-2xl font-bold">Daftar Persetujuan Perdin</h1>
         </div>
 
         <div className="border rounded-md">
@@ -68,6 +71,7 @@ export default function SDMDashboard() {
             <TableHeader>
               <TableRow>
                 <TableHead>Pegawai</TableHead>
+                <TableHead>Keterangan</TableHead>
                 <TableHead>Tujuan</TableHead>
                 <TableHead>Tanggal</TableHead>
                 <TableHead>Durasi</TableHead>
@@ -75,7 +79,7 @@ export default function SDMDashboard() {
                 <TableHead>Rute</TableHead>
                 <TableHead className="text-right">Uang Saku</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className="text-right">Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -89,18 +93,21 @@ export default function SDMDashboard() {
                 perdins.map((perdin) => (
                   <TableRow key={perdin.id}>
                     <TableCell className="font-medium">{perdin.user?.username}</TableCell>
-                    <TableCell>{perdin.purpose}</TableCell>
+                    <TableCell className="max-w-[200px] truncate" title={perdin.purpose}>
+                      {perdin.purpose}
+                    </TableCell>
+                    <TableCell>{perdin.destCity?.name}</TableCell>
                     <TableCell>
-                      {new Date(perdin.startDate).toLocaleDateString()} -{' '}
-                      {new Date(perdin.endDate).toLocaleDateString()}
+                      {new Date(perdin.startDate).toLocaleDateString('id-ID')} -{' '}
+                      {new Date(perdin.endDate).toLocaleDateString('id-ID')}
                     </TableCell>
                     <TableCell>{perdin.totalDays} Hari</TableCell>
-                    <TableCell>{perdin.distance.toLocaleString('id-ID')} km</TableCell>
+                    <TableCell>{Math.round(perdin.distance).toLocaleString('id-ID')} km</TableCell>
                     <TableCell>
                       {perdin.originCity?.name} ➝ {perdin.destCity?.name}
                     </TableCell>
                     <TableCell className="text-right">
-                      Rp {perdin.totalAllowance.toLocaleString('id-ID')}
+                      {formatCurrency(perdin.totalAllowance, perdin.destCity?.isOverseas)}
                     </TableCell>
                     <TableCell>
                       <span

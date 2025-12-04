@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
+import { toast } from 'sonner'
 import {
   Table,
   TableBody,
@@ -51,13 +52,13 @@ export default function AdminDashboard() {
 
       if (res.ok) {
         fetchUsers() // Refresh list
-        alert('Role updated successfully')
+        toast.success('Role updated successfully')
       } else {
-        alert('Failed to update role')
+        toast.error('Failed to update role')
       }
     } catch (error) {
       console.error(error)
-      alert('Error updating role')
+      toast.error('Error updating role')
     }
   }
 
@@ -67,7 +68,7 @@ export default function AdminDashboard() {
     <AuthGuard allowedRoles={['ADMIN']}>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">User Management</h1>
+          <h1 className="text-2xl font-bold">Manajemen Pengguna</h1>
         </div>
 
         <div className="border rounded-md">
@@ -75,8 +76,8 @@ export default function AdminDashboard() {
             <TableHeader>
               <TableRow>
                 <TableHead>Username</TableHead>
-                <TableHead>Current Role</TableHead>
-                <TableHead>Change Role</TableHead>
+                <TableHead>Peran Saat Ini</TableHead>
+                <TableHead>Ubah Peran</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -102,7 +103,7 @@ export default function AdminDashboard() {
                       defaultValue={user.role}
                     >
                       <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select Role" />
+                        <SelectValue placeholder="Pilih Peran" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="PEGAWAI">PEGAWAI</SelectItem>

@@ -1,6 +1,6 @@
-# Project Documentation
+# Perdin App (Sistem Informasi Perjalanan Dinas)
 
-This project is a monorepo managed by [Turborepo](https://turbo.build/repo). It contains the backend API and frontend Web application.
+This project is a monorepo managed by [Turborepo](https://turbo.build/repo). It contains the backend API and frontend Web application for managing official business trips (Perjalanan Dinas).
 
 ## Prerequisites
 
@@ -85,4 +85,4 @@ pnpm dev
 ## Project Structure
 
 - **`apps/api`**: Backend application built with Express and Prisma.
-- **`apps/web`**: Frontend application built with Next.js.
+- **`apps/web`**: Frontend application built with Next.js and shadcn/ui.

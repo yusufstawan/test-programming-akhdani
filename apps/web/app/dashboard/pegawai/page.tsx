@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
+import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { PlusCircle } from 'lucide-react'
 import {
   Table,
   TableBody,
@@ -43,9 +45,12 @@ export default function PegawaiDashboard() {
     <AuthGuard allowedRoles={['PEGAWAI', 'SDM', 'ADMIN']}>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Riwayat Perjalanan Dinas</h1>
+          <h1 className="text-2xl font-bold">Daftar Perjalanan Dinas</h1>
           <Link href="/dashboard/pegawai/create">
-            <Button>+ Ajukan Perdin</Button>
+            <Button>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Ajukan Perdin
+            </Button>
           </Link>
         </div>
 
@@ -54,34 +59,41 @@ export default function PegawaiDashboard() {
             <TableHeader>
               <TableRow>
                 <TableHead>Tujuan</TableHead>
+                <TableHead>Keterangan</TableHead>
                 <TableHead>Tanggal</TableHead>
                 <TableHead>Durasi</TableHead>
                 <TableHead>Jarak (km)</TableHead>
-                <TableHead>Kota Asal</TableHead>
-                <TableHead>Kota Tujuan</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>Rute</TableHead>
                 <TableHead className="text-right">Uang Saku</TableHead>
+                <TableHead>Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {perdins.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-10 text-gray-500">
+                  <TableCell colSpan={7} className="text-center py-10 text-gray-500">
                     Belum ada data perjalanan dinas.
                   </TableCell>
                 </TableRow>
               ) : (
                 perdins.map((perdin) => (
                   <TableRow key={perdin.id}>
-                    <TableCell className="font-medium">{perdin.purpose}</TableCell>
+                    <TableCell className="font-medium">{perdin.destCity?.name}</TableCell>
+                    <TableCell className="max-w-[200px] truncate" title={perdin.purpose}>
+                      {perdin.purpose}
+                    </TableCell>
                     <TableCell>
-                      {new Date(perdin.startDate).toLocaleDateString()} -{' '}
-                      {new Date(perdin.endDate).toLocaleDateString()}
+                      {new Date(perdin.startDate).toLocaleDateString('id-ID')} -{' '}
+                      {new Date(perdin.endDate).toLocaleDateString('id-ID')}
                     </TableCell>
                     <TableCell>{perdin.totalDays} Hari</TableCell>
-                    <TableCell>{perdin.distance.toLocaleString('id-ID')} km</TableCell>
-                    <TableCell>{perdin.originCity?.name}</TableCell>
-                    <TableCell>{perdin.destCity?.name}</TableCell>
+                    <TableCell>{Math.round(perdin.distance).toLocaleString('id-ID')} km</TableCell>
+                    <TableCell>
+                      {perdin.originCity?.name} ➝ {perdin.destCity?.name}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {formatCurrency(perdin.totalAllowance, perdin.destCity?.isOverseas)}
+                    </TableCell>
                     <TableCell>
                       <span
                         className={`px-2 py-1 rounded text-xs font-bold ${
@@ -96,8 +108,7 @@ export default function PegawaiDashboard() {
                       </span>
                     </TableCell>
                     <TableCell className="text-right">
-                      {/* Simple formatting, assuming IDR for now as per PRD mostly */}
-                      Rp {perdin.totalAllowance.toLocaleString('id-ID')}
+                      {formatCurrency(perdin.totalAllowance, perdin.destCity?.isOverseas)}
                     </TableCell>
                   </TableRow>
                 ))
