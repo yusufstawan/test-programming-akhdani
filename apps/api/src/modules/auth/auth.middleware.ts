@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { User } from "@repo/types";
 
 import { Role } from "../../generated/prisma/client";
 
@@ -14,12 +15,9 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     return;
   }
 
-  jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
-    if (err) {
-      res.status(403).json({ message: "Invalid or expired token" });
-      return;
-    }
-    req.user = user as { id: string; username: string; role: Role };
+  jwt.verify(token, JWT_SECRET, (err: any, decoded: any) => {
+    if (err) return res.sendStatus(403);
+    (req as any).user = decoded as User;
     next();
   });
 };

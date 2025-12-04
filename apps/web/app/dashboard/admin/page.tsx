@@ -18,12 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import AuthGuard from "@/components/auth-guard"
-
-interface User {
-  id: string
-  username: string
-  role: string
-}
+import { User } from "@repo/types"
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState<User[]>([])

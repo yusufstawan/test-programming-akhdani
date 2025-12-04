@@ -14,8 +14,9 @@ export class PerdinController {
       const userId = (req as any).user.id; // Assuming auth middleware attaches user
       const perdin = await this.perdinService.createPerdin(userId, req.body);
       res.status(201).json(perdin);
-    } catch (error: any) {
-      res.status(400).json({ message: error.message });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      res.status(400).json({ message });
     }
   };
 
@@ -24,8 +25,9 @@ export class PerdinController {
       const user = (req as any).user;
       const perdins = await this.perdinService.getAllPerdins(user.id, user.role);
       res.status(200).json(perdins);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      res.status(500).json({ message });
     }
   };
 
@@ -40,8 +42,9 @@ export class PerdinController {
 
       const perdin = await this.perdinService.updatePerdinStatus(id, status as PerdinStatus);
       res.status(200).json(perdin);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      res.status(500).json({ message });
     }
   };
 }

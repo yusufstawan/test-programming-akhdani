@@ -12,8 +12,9 @@ export class MasterController {
     try {
       const cities = await this.masterService.getAllCities();
       res.status(200).json(cities);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      res.status(500).json({ message });
     }
   };
 
@@ -21,8 +22,9 @@ export class MasterController {
     try {
       const city = await this.masterService.createCity(req.body);
       res.status(201).json(city);
-    } catch (error: any) {
-      res.status(400).json({ message: error.message });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      res.status(400).json({ message });
     }
   };
 
@@ -31,8 +33,9 @@ export class MasterController {
       const { id } = req.params;
       const city = await this.masterService.updateCity(id, req.body);
       res.status(200).json(city);
-    } catch (error: any) {
-      res.status(400).json({ message: error.message });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      res.status(400).json({ message });
     }
   };
 
@@ -41,8 +44,9 @@ export class MasterController {
       const { id } = req.params;
       await this.masterService.deleteCity(id);
       res.status(204).send();
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      res.status(500).json({ message });
     }
   };
 }

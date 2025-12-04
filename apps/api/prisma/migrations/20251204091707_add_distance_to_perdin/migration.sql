@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Perdin" ADD COLUMN     "distance" DOUBLE PRECISION NOT NULL DEFAULT 0;

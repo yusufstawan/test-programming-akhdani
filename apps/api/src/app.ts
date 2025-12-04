@@ -24,9 +24,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Global Error Handler
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Internal Server Error", error: err.message });
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+  console.error(err);
+  const message = err instanceof Error ? err.message : "Unknown error";
+  res.status(500).json({ message: "Internal Server Error", error: message });
 });
 
 export default app;

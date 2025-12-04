@@ -1,5 +1,5 @@
 import { PerdinRepository } from "./perdin.repository";
-import { Perdin, City, PerdinStatus } from "../../generated/prisma/client";
+import { Perdin, City, PerdinStatus, Prisma } from "../../generated/prisma/client";
 import { prisma } from "../../common/prisma";
 import { calculateDistance } from "../../common/utils/distance.util";
 
@@ -82,6 +82,7 @@ export class PerdinService {
       endDate: end,
       totalDays: totalDays,
       totalAllowance: totalAllowance,
+      distance: distance,
       user: { connect: { id: userId } },
       originCity: { connect: { id: data.originCityId } },
       destCity: { connect: { id: data.destCityId } },
@@ -90,7 +91,7 @@ export class PerdinService {
   }
 
   async getAllPerdins(userId: string, role: string): Promise<Perdin[]> {
-    let where: any = {};
+    let where: Prisma.PerdinWhereInput = {};
 
     if (role === 'PEGAWAI') {
       where = { userId };

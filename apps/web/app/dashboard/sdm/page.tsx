@@ -12,25 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import AuthGuard from "@/components/auth-guard"
-
-interface Perdin {
-  id: string
-  user: {
-    username: string
-  }
-  purpose: string
-  startDate: string
-  endDate: string
-  totalDays: number
-  originCity: {
-    name: string
-  }
-  destCity: {
-    name: string
-  }
-  totalAllowance: number
-  status: string
-}
+import { Perdin } from "@repo/types"
 
 export default function SDMDashboard() {
   const [perdins, setPerdins] = useState<Perdin[]>([])
@@ -89,6 +71,7 @@ export default function SDMDashboard() {
                 <TableHead>Tujuan</TableHead>
                 <TableHead>Tanggal</TableHead>
                 <TableHead>Durasi</TableHead>
+                <TableHead>Jarak (km)</TableHead>
                 <TableHead>Rute</TableHead>
                 <TableHead className="text-right">Uang Saku</TableHead>
                 <TableHead>Status</TableHead>
@@ -98,20 +81,21 @@ export default function SDMDashboard() {
             <TableBody>
               {perdins.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-10 text-gray-500">
+                  <TableCell colSpan={9} className="text-center py-10 text-gray-500">
                     Belum ada data perjalanan dinas.
                   </TableCell>
                 </TableRow>
               ) : (
                 perdins.map((perdin) => (
                   <TableRow key={perdin.id}>
-                    <TableCell className="font-medium">{perdin.user.username}</TableCell>
+                    <TableCell className="font-medium">{perdin.user?.username}</TableCell>
                     <TableCell>{perdin.purpose}</TableCell>
                     <TableCell>
                       {new Date(perdin.startDate).toLocaleDateString()} - {new Date(perdin.endDate).toLocaleDateString()}
                     </TableCell>
                     <TableCell>{perdin.totalDays} Hari</TableCell>
-                    <TableCell>{perdin.originCity.name} ➝ {perdin.destCity.name}</TableCell>
+                    <TableCell>{perdin.distance.toLocaleString('id-ID')} km</TableCell>
+                    <TableCell>{perdin.originCity?.name} ➝ {perdin.destCity?.name}</TableCell>
                     <TableCell className="text-right">
                       Rp {perdin.totalAllowance.toLocaleString('id-ID')}
                     </TableCell>

@@ -13,22 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import AuthGuard from "@/components/auth-guard"
-
-interface Perdin {
-  id: string
-  purpose: string
-  startDate: string
-  endDate: string
-  totalDays: number
-  originCity: {
-    name: string
-  }
-  destCity: {
-    name: string
-  }
-  status: string
-  totalAllowance: number
-}
+import { Perdin } from "@repo/types"
 
 export default function PegawaiDashboard() {
   const [perdins, setPerdins] = useState<Perdin[]>([])
@@ -71,6 +56,7 @@ export default function PegawaiDashboard() {
                 <TableHead>Tujuan</TableHead>
                 <TableHead>Tanggal</TableHead>
                 <TableHead>Durasi</TableHead>
+                <TableHead>Jarak (km)</TableHead>
                 <TableHead>Kota Asal</TableHead>
                 <TableHead>Kota Tujuan</TableHead>
                 <TableHead>Status</TableHead>
@@ -80,7 +66,7 @@ export default function PegawaiDashboard() {
             <TableBody>
               {perdins.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-10 text-gray-500">
+                  <TableCell colSpan={8} className="text-center py-10 text-gray-500">
                     Belum ada data perjalanan dinas.
                   </TableCell>
                 </TableRow>
@@ -92,8 +78,9 @@ export default function PegawaiDashboard() {
                       {new Date(perdin.startDate).toLocaleDateString()} - {new Date(perdin.endDate).toLocaleDateString()}
                     </TableCell>
                     <TableCell>{perdin.totalDays} Hari</TableCell>
-                    <TableCell>{perdin.originCity.name}</TableCell>
-                    <TableCell>{perdin.destCity.name}</TableCell>
+                    <TableCell>{perdin.distance.toLocaleString('id-ID')} km</TableCell>
+                    <TableCell>{perdin.originCity?.name}</TableCell>
+                    <TableCell>{perdin.destCity?.name}</TableCell>
                     <TableCell>
                       <span className={`px-2 py-1 rounded text-xs font-bold ${
                         perdin.status === 'APPROVED' ? 'bg-green-100 text-green-800' :

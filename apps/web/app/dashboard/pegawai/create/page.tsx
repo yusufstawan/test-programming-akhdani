@@ -14,9 +14,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+import { City } from "@repo/types"
+
 export default function CreatePerdinPage() {
   const router = useRouter()
-  const [cities, setCities] = useState<any[]>([])
+  const [cities, setCities] = useState<City[]>([])
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     purpose: "",
@@ -38,6 +40,18 @@ export default function CreatePerdinPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Validation
+    if (formData.originCityId === formData.destCityId) {
+      alert("Kota asal dan tujuan tidak boleh sama")
+      return
+    }
+
+    if (new Date(formData.endDate) < new Date(formData.startDate)) {
+      alert("Tanggal pulang tidak boleh sebelum tanggal berangkat")
+      return
+    }
+
     setLoading(true)
     try {
       const res = await api("/perdin", {
@@ -45,12 +59,16 @@ export default function CreatePerdinPage() {
         body: JSON.stringify(formData),
       })
 
-      if (!res.ok) throw new Error("Failed to create perdin")
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.message || "Failed to create perdin")
+      }
 
       router.push("/dashboard/pegawai")
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error)
-      alert("Gagal mengajukan perdin")
+      const message = error instanceof Error ? error.message : "Gagal mengajukan perdin";
+      alert(message)
     } finally {
       setLoading(false)
     }

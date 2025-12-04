@@ -19,8 +19,8 @@ export class AuthController {
 
       const result = await this.authService.register({ username, password, role });
       res.status(201).json(result);
-    } catch (error: any) {
-      if (error.message === "Username already exists") {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === "Username already exists") {
         res.status(409).json({ message: error.message });
       } else {
         next(error);
@@ -33,8 +33,8 @@ export class AuthController {
       const { username, password } = req.body;
       const result = await this.authService.login({ username, password });
       res.json(result);
-    } catch (error: any) {
-      if (error.message === "Invalid credentials") {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === "Invalid credentials") {
         res.status(401).json({ message: error.message });
       } else {
         next(error);
