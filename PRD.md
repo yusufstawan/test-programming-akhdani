@@ -1,52 +1,77 @@
-# Test Programming Akhdani
+# Product Requirements Document (PRD)
 
-## Ketentuan
-
-1. Dapat diimplementasikan dengan bahasa pemrograman atau framework apa pun.
-2. Aplikasi harus runnable dan memiliki user interface.
-3. Jika ada hal yang kurang jelas dapat diasumsikan sendiri.
+## Aplikasi Pengelolaan Perjalanan Dinas (Perdin)
 
 ---
 
-# SOAL
+# 1. Ringkasan Produk
 
-Buatlah sebuah aplikasi untuk melakukan pengelolaan perjalanan dinas (perdin) pegawai dalam sebuah perusahaan.  
-Aplikasi ini digunakan untuk mencatat perjalanan dinas serta menghitung besaran nominal uang saku yang diberikan kepada pegawai selama perjalanan dinas.
-
----
-
-# Spesifikasi Aplikasi
-
-## 1. Autentikasi & Role User
-
-Setiap user harus memiliki:
-
-- Username
-- Password
-
-Role user yang tersedia:
-
-- PEGAWAI
-- DIVISI-SDM
-
-Admin dapat mengatur role masing-masing user.
+Aplikasi Pengelolaan Perjalanan Dinas (Perdin) digunakan untuk mengajukan, mengelola, menghitung, dan memproses perjalanan dinas pegawai.  
+Termasuk pengajuan oleh pegawai, perhitungan otomatis uang saku berdasarkan jarak, serta approval oleh Divisi SDM.
 
 ---
 
-## 2. Pengajuan Perdin oleh Pegawai
+# 2. Role & Autentikasi
 
-### Data yang diajukan:
+## 2.1 Role User
 
-- Maksud tujuan perdin (teks)
+### PEGAWAI
+
+- Mengajukan perjalanan dinas
+- Melihat daftar perdin
+- Melihat status (Pending / Approved / Rejected)
+
+### DIVISI-SDM
+
+- Melihat seluruh pengajuan
+- Meng-approve atau menolak pengajuan
+- Melihat history pengajuan
+
+## 2.2 Autentikasi
+
+- Username & password
+- Admin mengatur role user
+
+---
+
+# 3. Fitur Pegawai
+
+## 3.1 Pengajuan Perdin
+
+Field yang diajukan:
+
+- Maksud perjalanan
 - Tanggal berangkat
 - Tanggal pulang
 - Kota asal
 - Kota tujuan
-- Durasi perdin (otomatis dihitung dari tanggal)
+- Durasi (otomatis)
+- Jarak perjalanan (otomatis)
 
-### Master Data Kota
+### Validasi
 
-Data kota memuat:
+- Tanggal pulang ≥ tanggal berangkat
+- Kota asal ≠ kota tujuan
+- Semua field wajib
+
+## 3.2 Daftar Perdin Pegawai
+
+Kolom minimal:
+
+- Kota asal → Kota tujuan
+- Tanggal perjalanan
+- Total hari
+- Maksud perjalanan
+- Jarak (km)
+- Status (Pending / Approved / Rejected)
+
+Tombol: **Tambah Perdin**
+
+---
+
+# 4. Master Data Kota
+
+## 4.1 Struktur Data Kota
 
 - Nama kota
 - Latitude
@@ -55,56 +80,161 @@ Data kota memuat:
 - Pulau
 - Luar negeri (Ya/Tidak)
 
-**Contoh data Kota Bandung:**
+### Contoh:
 
-- Nama: Kota Bandung
+- Nama: Bandung
 - Latitude: -6.917500
 - Longitude: 107.619100
 - Provinsi: Jawa Barat
 - Pulau: Jawa
 - Luar negeri: Tidak
 
----
+### Pengelola:
 
-## 3. Aturan Uang Saku Perdin (per hari)
-
-| Jarak                                        | Keterangan               | Uang Saku |
-| -------------------------------------------- | ------------------------ | --------- |
-| 0–60 km                                      | Tidak mendapat uang saku | Rp 0      |
-| >60 km dan dalam satu provinsi               | Rp 200.000 per hari      |
-| >60 km luar provinsi tetapi masih satu pulau | Rp 250.000 per hari      |
-| >60 km luar provinsi dan luar pulau          | Rp 300.000 per hari      |
-| Perdin luar negeri                           | USD 50 per hari          |
+- Admin / SDM dapat menambah atau mengedit data kota
 
 ---
 
-## 4. Perhitungan Jarak
+# 5. Perhitungan Teknis
 
-Jarak perjalanan dihitung berdasarkan koordinat latitude–longitude kota asal dan tujuan.  
-Peserta dipersilakan menggunakan rumus perhitungan jarak lat-lon (misalnya Haversine).
+## 5.1 Durasi Perjalanan (Hari)
+
+Durasi dihitung secara **inklusif**:
+Durasi = (Tanggal Pulang – Tanggal Berangkat) + 1
+
+## 5.2 Perhitungan Jarak
+
+Menggunakan rumus **Haversine** berdasarkan koordinat latitude–longitude kota asal dan tujuan.
+
+## 5.3 Aturan Uang Saku Per Hari
+
+| Kriteria                           | Uang Saku per Hari |
+| ---------------------------------- | ------------------ |
+| 0–60 km                            | Rp 0               |
+| >60 km, satu provinsi              | Rp 200.000         |
+| >60 km, beda provinsi & satu pulau | Rp 250.000         |
+| >60 km, beda provinsi & beda pulau | Rp 300.000         |
+| Luar negeri                        | USD 50             |
+
+### Catatan:
+
+- Jika **luar negeri = Ya**, selalu USD 50/hari
+- Jika jarak ≤ 60 km → langsung Rp 0
 
 ---
 
-## 5. Approval oleh SDM
+# 6. Status & Alur Pengajuan
 
-Setiap pengajuan perdin harus diproses dan disetujui oleh user dengan role SDM.  
-Pada halaman approval harus ditampilkan:
+Status pengajuan:
 
-- Total hari perjalanan dinas
-- Total uang perdin yang harus dibayarkan
+- **PENDING** — setelah pegawai submit
+- **APPROVED** — jika disetujui SDM
+- **REJECTED** — jika ditolak SDM
 
----
+Alur:
 
-# Contoh UI
-
-- Login Form
-- Daftar Perdin Pegawai
-- Form Input Perdin
-- Daftar Perdin untuk Diproses (SDM)
-- Approval Perdin Pegawai
+1. Pegawai submit → Pending
+2. SDM review → Approve / Reject
 
 ---
 
-# Master Data Kota
+# 7. Fitur SDM
 
-Berisi daftar kota yang akan digunakan sebagai referensi pada pengajuan perdin.
+## 7.1 Daftar Pengajuan Pending
+
+Kolom minimal:
+
+- Nama pegawai
+- Kota asal → tujuan
+- Tanggal perjalanan
+- Total hari
+- Jarak tempuh
+- Status
+
+Aksi:
+
+- **Review / Approve / Reject**
+
+## 7.2 Halaman Approval Perdin
+
+Menampilkan:
+
+- Nama pegawai
+- Maksud perjalanan
+- Kota asal → tujuan
+- Jarak tempuh (km)
+- Tanggal berangkat & pulang
+- Total hari
+- Uang saku per hari
+- Total uang saku
+
+Aksi:
+
+- **Approve**
+- **Reject**
+
+## 7.3 History Pengajuan
+
+Menampilkan seluruh pengajuan dengan status:
+
+- Approved
+- Rejected
+
+Kolom minimal:
+
+- Nama pegawai
+- Kota asal → tujuan
+- Tanggal
+- Total hari
+- Total uang saku
+- Status
+
+---
+
+# 8. Asumsi Teknis
+
+- Mata uang domestik: IDR
+- Luar negeri: USD
+- Tidak ada konversi kurs
+- Jarak dibulatkan (2 desimal atau integer, konsisten)
+- Tidak ada tanda tangan digital
+- UI bebas namun minimal memenuhi kebutuhan form dan daftar
+
+---
+
+# 9. UI yang Harus Ada
+
+1. Login Form
+2. Daftar Perdin Pegawai
+3. Form Input Perdin
+4. Daftar Perdin Pending untuk SDM
+5. Halaman Detail/Approval Perdin
+6. History Approval SDM
+
+---
+
+# 10. Non-Functional Requirements (Opsional)
+
+- Aplikasi dapat dijalankan secara lokal
+- Responsif & mudah digunakan
+- Password di-hash
+- Validasi input memadai
+- Perhitungan jarak & uang saku otomatis
+
+---
+
+# 11. (Opsional) Endpoint API
+
+- POST /login
+- GET /cities
+- POST /perdin
+- GET /perdin/my
+- GET /perdin/pending
+- POST /perdin/{id}/approve
+- POST /perdin/{id}/reject
+
+---
+
+# 12. Selesai
+
+Dokumen ini mencakup seluruh kebutuhan aplikasi pengelolaan perjalanan dinas, termasuk rule bisnis, perhitungan jarak, regulasi uang saku, alur approval, serta struktur data utama.

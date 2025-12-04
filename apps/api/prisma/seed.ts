@@ -1,8 +1,44 @@
-import {prisma} from "../src/common/prisma"
+import { prisma } from "../src/common/prisma";
+import bcrypt from 'bcrypt';
 
-async function main() {
-  console.log('Start seeding...');
+async function seedUsers() {
+  const password = 'password123';
+  const hashedPassword = await bcrypt.hash(password, 10);
 
+  const users = [
+    { username: 'admin', role: 'ADMIN' },
+    { username: 'sdm', role: 'SDM' },
+    { username: 'pegawai', role: 'PEGAWAI' },
+  ];
+
+  for (const user of users) {
+    const existingUser = await prisma.user.findUnique({
+      where: { username: user.username },
+    });
+
+    if (!existingUser) {
+      await prisma.user.create({
+        data: {
+          username: user.username,
+          password: hashedPassword,
+          role: user.role as any,
+        },
+      });
+      console.log(`User created: ${user.username} / ${password} (${user.role})`);
+    } else {
+      console.log(`User already exists: ${user.username}`);
+      if (existingUser.role !== user.role) {
+        await prisma.user.update({
+          where: { username: user.username },
+          data: { role: user.role as any },
+        });
+        console.log(`Updated existing user ${user.username} to ${user.role} role.`);
+      }
+    }
+  }
+}
+
+async function seedCities() {
   const cities = [
     {
       name: 'Jakarta Pusat',
@@ -76,7 +112,12 @@ async function main() {
       console.log(`City already exists: ${city.name}`);
     }
   }
+}
 
+async function main() {
+  console.log('Start seeding...');
+  await seedUsers();
+  await seedCities();
   console.log('Seeding finished.');
 }
 

@@ -53,10 +53,17 @@ Copy the example environment files to create your local configuration:
    # Run migrations
    pnpm --filter api prisma:migrate
 
-   # Seed data (Cities and Admin)
-   pnpm --filter api seed:cities
-   pnpm --filter api seed:admin
+   # Seed data
+   pnpm --filter api db:seed
    ```
+
+3. **Default Users**:
+
+   | Role    | Username  | Password      |
+   | ------- | --------- | ------------- |
+   | Admin   | `admin`   | `password123` |
+   | SDM     | `sdm`     | `password123` |
+   | Pegawai | `pegawai` | `password123` |
 
 ## Running Development
 

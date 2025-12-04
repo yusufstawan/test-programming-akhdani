@@ -13,11 +13,11 @@
     "prisma:generate": "npx prisma generate --config ./prisma.config.ts",
     "prisma:reset": "npx prisma migrate reset",
     "prisma:studio": "npx prisma studio --config ./prisma.config.ts",
-    "seed:cities": "tsx prisma/seed-cities.ts",
-    "seed:admin": "tsx prisma/seed-admin.ts"
+    "db:seed": "npx prisma db seed --config ./prisma.config.ts",
+    "seed": "tsx prisma/seed.ts"
   },
   "prisma": {
-    "seed": "tsx prisma/seed-cities.ts"
+    "seed": "tsx prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
