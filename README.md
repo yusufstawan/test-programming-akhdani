@@ -18,8 +18,6 @@ Install dependencies from the root directory:
 pnpm install
 ```
 
-> **Note**: This will automatically generate the Prisma Client via a `postinstall` script.
-
 ## Environment Setup
 
 Copy the example environment files to create your local configuration:
@@ -48,7 +46,14 @@ Copy the example environment files to create your local configuration:
    docker compose up -d
    ```
 
-2. **Migrate and Seed**:
+2. **Generate Prisma Client**:
+   This is required before running any other commands.
+
+   ```bash
+   pnpm --filter api prisma:generate
+   ```
+
+3. **Migrate and Seed**:
    Apply database migrations and seed initial data:
 
    ```bash
@@ -65,7 +70,7 @@ Copy the example environment files to create your local configuration:
    > pnpm --filter api prisma:generate
    > ```
 
-3. **Default Users**:
+4. **Default Users**:
 
    | Role    | Username  | Password      |
    | ------- | --------- | ------------- |
@@ -103,7 +108,7 @@ This will open a web interface at [http://localhost:51212](http://localhost:5121
 
 ### Prisma Client Not Found
 
-If you encounter `Error [ERR_MODULE_NOT_FOUND]` related to `generated/prisma/client`, it means the Prisma Client hasn't been generated yet. This should happen automatically during `pnpm install`, but you can run it manually:
+If you encounter `Error [ERR_MODULE_NOT_FOUND]` related to `generated/prisma/client`, it means the Prisma Client hasn't been generated yet. You need to run the generation command manually:
 
 ```bash
 pnpm --filter api prisma:generate
