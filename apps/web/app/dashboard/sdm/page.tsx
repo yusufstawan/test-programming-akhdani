@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import { api } from "@/lib/api"
-import { Button } from "@/components/ui/button"
+import { useEffect, useState } from 'react'
+import { api } from '@/lib/api'
+import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -10,9 +10,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import AuthGuard from "@/components/auth-guard"
-import { Perdin } from "@repo/types"
+} from '@/components/ui/table'
+import AuthGuard from '@/components/auth-guard'
+import { Perdin } from '@repo/types'
 
 export default function SDMDashboard() {
   const [perdins, setPerdins] = useState<Perdin[]>([])
@@ -20,13 +20,13 @@ export default function SDMDashboard() {
 
   const fetchPerdins = async () => {
     try {
-      const res = await api("/perdin")
+      const res = await api('/perdin')
       if (res.ok) {
         const data = await res.json()
         setPerdins(data)
       }
     } catch (error) {
-      console.error("Failed to fetch perdins", error)
+      console.error('Failed to fetch perdins', error)
     } finally {
       setLoading(false)
     }
@@ -39,18 +39,18 @@ export default function SDMDashboard() {
   const handleStatusUpdate = async (id: string, status: 'APPROVED' | 'REJECTED') => {
     try {
       const res = await api(`/perdin/${id}/status`, {
-        method: "PATCH",
+        method: 'PATCH',
         body: JSON.stringify({ status }),
       })
 
       if (res.ok) {
         fetchPerdins() // Refresh list
       } else {
-        alert("Gagal update status")
+        alert('Gagal update status')
       }
     } catch (error) {
       console.error(error)
-      alert("Error updating status")
+      alert('Error updating status')
     }
   }
 
@@ -91,30 +91,47 @@ export default function SDMDashboard() {
                     <TableCell className="font-medium">{perdin.user?.username}</TableCell>
                     <TableCell>{perdin.purpose}</TableCell>
                     <TableCell>
-                      {new Date(perdin.startDate).toLocaleDateString()} - {new Date(perdin.endDate).toLocaleDateString()}
+                      {new Date(perdin.startDate).toLocaleDateString()} -{' '}
+                      {new Date(perdin.endDate).toLocaleDateString()}
                     </TableCell>
                     <TableCell>{perdin.totalDays} Hari</TableCell>
                     <TableCell>{perdin.distance.toLocaleString('id-ID')} km</TableCell>
-                    <TableCell>{perdin.originCity?.name} ➝ {perdin.destCity?.name}</TableCell>
+                    <TableCell>
+                      {perdin.originCity?.name} ➝ {perdin.destCity?.name}
+                    </TableCell>
                     <TableCell className="text-right">
                       Rp {perdin.totalAllowance.toLocaleString('id-ID')}
                     </TableCell>
                     <TableCell>
-                      <span className={`px-2 py-1 rounded text-xs font-bold ${
-                        perdin.status === 'APPROVED' ? 'bg-green-100 text-green-800' :
-                        perdin.status === 'REJECTED' ? 'bg-red-100 text-red-800' :
-                        'bg-yellow-100 text-yellow-800'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-bold ${
+                          perdin.status === 'APPROVED'
+                            ? 'bg-green-100 text-green-800'
+                            : perdin.status === 'REJECTED'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-yellow-100 text-yellow-800'
+                        }`}
+                      >
                         {perdin.status}
                       </span>
                     </TableCell>
                     <TableCell className="text-right">
                       {perdin.status === 'PENDING' && (
                         <div className="flex justify-end gap-2">
-                          <Button size="sm" variant="outline" className="text-green-600 border-green-200 hover:bg-green-50" onClick={() => handleStatusUpdate(perdin.id, 'APPROVED')}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-green-600 border-green-200 hover:bg-green-50"
+                            onClick={() => handleStatusUpdate(perdin.id, 'APPROVED')}
+                          >
                             Approve
                           </Button>
-                          <Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50" onClick={() => handleStatusUpdate(perdin.id, 'REJECTED')}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-red-600 border-red-200 hover:bg-red-50"
+                            onClick={() => handleStatusUpdate(perdin.id, 'REJECTED')}
+                          >
                             Reject
                           </Button>
                         </div>

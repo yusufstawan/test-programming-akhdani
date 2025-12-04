@@ -1,43 +1,46 @@
-import { prisma } from "../../common/prisma";
-import { City } from "../../generated/prisma/client";
+import { prisma } from '../../common/prisma'
+import { City } from '../../generated/prisma/client'
 
 export class MasterService {
   async getAllCities(): Promise<City[]> {
     return prisma.city.findMany({
-      orderBy: { name: 'asc' }
-    });
+      orderBy: { name: 'asc' },
+    })
   }
 
   async createCity(data: {
-    name: string;
-    latitude: number;
-    longitude: number;
-    province: string;
-    island: string;
-    isOverseas: boolean;
+    name: string
+    latitude: number
+    longitude: number
+    province: string
+    island: string
+    isOverseas: boolean
   }): Promise<City> {
     return prisma.city.create({
-      data
-    });
+      data,
+    })
   }
 
-  async updateCity(id: string, data: {
-    name?: string;
-    latitude?: number;
-    longitude?: number;
-    province?: string;
-    island?: string;
-    isOverseas?: boolean;
-  }): Promise<City> {
+  async updateCity(
+    id: string,
+    data: {
+      name?: string
+      latitude?: number
+      longitude?: number
+      province?: string
+      island?: string
+      isOverseas?: boolean
+    }
+  ): Promise<City> {
     return prisma.city.update({
       where: { id },
-      data
-    });
+      data,
+    })
   }
 
   async deleteCity(id: string): Promise<City> {
     return prisma.city.delete({
-      where: { id }
-    });
+      where: { id },
+    })
   }
 }

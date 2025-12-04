@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import { api } from "@/lib/api"
+import { useEffect, useState } from 'react'
+import { api } from '@/lib/api'
 import {
   Table,
   TableBody,
@@ -9,16 +9,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from '@/components/ui/table'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import AuthGuard from "@/components/auth-guard"
-import { User } from "@repo/types"
+} from '@/components/ui/select'
+import AuthGuard from '@/components/auth-guard'
+import { User } from '@repo/types'
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState<User[]>([])
@@ -26,13 +26,13 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const res = await api("/users")
+      const res = await api('/users')
       if (res.ok) {
         const data = await res.json()
         setUsers(data)
       }
     } catch (error) {
-      console.error("Failed to fetch users", error)
+      console.error('Failed to fetch users', error)
     } finally {
       setLoading(false)
     }
@@ -45,19 +45,19 @@ export default function AdminDashboard() {
   const handleRoleUpdate = async (id: string, role: string) => {
     try {
       const res = await api(`/users/${id}/role`, {
-        method: "PATCH",
+        method: 'PATCH',
         body: JSON.stringify({ role }),
       })
 
       if (res.ok) {
         fetchUsers() // Refresh list
-        alert("Role updated successfully")
+        alert('Role updated successfully')
       } else {
-        alert("Failed to update role")
+        alert('Failed to update role')
       }
     } catch (error) {
       console.error(error)
-      alert("Error updating role")
+      alert('Error updating role')
     }
   }
 
@@ -84,16 +84,20 @@ export default function AdminDashboard() {
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.username}</TableCell>
                   <TableCell>
-                    <span className={`px-2 py-1 rounded text-xs font-bold ${
-                      user.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' :
-                      user.role === 'SDM' ? 'bg-blue-100 text-blue-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-bold ${
+                        user.role === 'ADMIN'
+                          ? 'bg-purple-100 text-purple-800'
+                          : user.role === 'SDM'
+                            ? 'bg-blue-100 text-blue-800'
+                            : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
                       {user.role}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Select 
+                    <Select
                       onValueChange={(val) => handleRoleUpdate(user.id, val)}
                       defaultValue={user.role}
                     >

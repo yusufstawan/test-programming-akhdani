@@ -1,20 +1,20 @@
-import { prisma } from "../src/common/prisma";
-import bcrypt from 'bcrypt';
+import { prisma } from '../src/common/prisma'
+import bcrypt from 'bcrypt'
 
 async function seedUsers() {
-  const password = 'password123';
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const password = 'password123'
+  const hashedPassword = await bcrypt.hash(password, 10)
 
   const users = [
     { username: 'admin', role: 'ADMIN' },
     { username: 'sdm', role: 'SDM' },
     { username: 'pegawai', role: 'PEGAWAI' },
-  ];
+  ]
 
   for (const user of users) {
     const existingUser = await prisma.user.findUnique({
       where: { username: user.username },
-    });
+    })
 
     if (!existingUser) {
       await prisma.user.create({
@@ -23,16 +23,16 @@ async function seedUsers() {
           password: hashedPassword,
           role: user.role as any,
         },
-      });
-      console.log(`User created: ${user.username} / ${password} (${user.role})`);
+      })
+      console.log(`User created: ${user.username} / ${password} (${user.role})`)
     } else {
-      console.log(`User already exists: ${user.username}`);
+      console.log(`User already exists: ${user.username}`)
       if (existingUser.role !== user.role) {
         await prisma.user.update({
           where: { username: user.username },
           data: { role: user.role as any },
-        });
-        console.log(`Updated existing user ${user.username} to ${user.role} role.`);
+        })
+        console.log(`Updated existing user ${user.username} to ${user.role} role.`)
       }
     }
   }
@@ -96,36 +96,36 @@ async function seedCities() {
       island: '-',
       isOverseas: true,
     },
-  ];
+  ]
 
   for (const city of cities) {
     const existingCity = await prisma.city.findFirst({
       where: { name: city.name },
-    });
+    })
 
     if (!existingCity) {
       await prisma.city.create({
         data: city,
-      });
-      console.log(`Created city: ${city.name}`);
+      })
+      console.log(`Created city: ${city.name}`)
     } else {
-      console.log(`City already exists: ${city.name}`);
+      console.log(`City already exists: ${city.name}`)
     }
   }
 }
 
 async function main() {
-  console.log('Start seeding...');
-  await seedUsers();
-  await seedCities();
-  console.log('Seeding finished.');
+  console.log('Start seeding...')
+  await seedUsers()
+  await seedCities()
+  console.log('Seeding finished.')
 }
 
 main()
   .catch((e) => {
-    console.error(e);
-    process.exit(1);
+    console.error(e)
+    process.exit(1)
   })
   .finally(async () => {
-    await prisma.$disconnect();
-  });
+    await prisma.$disconnect()
+  })

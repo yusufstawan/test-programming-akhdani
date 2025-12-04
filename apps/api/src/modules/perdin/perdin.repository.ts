@@ -1,11 +1,11 @@
-import { Prisma, Perdin } from "../../generated/prisma/client";
-import { prisma } from "../../common/prisma";
+import { Prisma, Perdin } from '../../generated/prisma/client'
+import { prisma } from '../../common/prisma'
 
 export class PerdinRepository {
   async create(data: Prisma.PerdinCreateInput): Promise<Perdin> {
     return prisma.perdin.create({
       data,
-    });
+    })
   }
 
   async findById(id: string): Promise<Perdin | null> {
@@ -16,7 +16,7 @@ export class PerdinRepository {
         originCity: true,
         destCity: true,
       },
-    });
+    })
   }
 
   async findAll(where?: Prisma.PerdinWhereInput): Promise<Perdin[]> {
@@ -30,7 +30,7 @@ export class PerdinRepository {
       orderBy: {
         createdAt: 'desc',
       },
-    });
+    })
   }
 
   async update(id: string, data: Prisma.PerdinUpdateInput): Promise<Perdin> {
@@ -42,6 +42,6 @@ export class PerdinRepository {
         originCity: true,
         destCity: true,
       },
-    });
+    })
   }
 }

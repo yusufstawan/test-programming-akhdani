@@ -50,12 +50,18 @@ Copy the example environment files to create your local configuration:
    Apply database migrations and seed initial data:
 
    ```bash
-   # Run migrations
+   # Run migrations (automatically generates Prisma Client)
    pnpm --filter api prisma:migrate
 
    # Seed data
    pnpm --filter api db:seed
    ```
+
+   > **Note**: `prisma:migrate` automatically generates the Prisma Client. If you need to regenerate the client without migrating (e.g. after pulling changes), run:
+   >
+   > ```bash
+   > pnpm --filter api prisma:generate
+   > ```
 
 3. **Default Users**:
 

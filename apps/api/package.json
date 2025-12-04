@@ -6,9 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "npm run prisma:generate && tsc",
     "start": "node dist/index.js",
-    "lint": "eslint .",
     "prisma:migrate": "npx prisma migrate dev --config ./prisma.config.ts",
     "prisma:generate": "npx prisma generate --config ./prisma.config.ts",
     "prisma:reset": "npx prisma migrate reset",

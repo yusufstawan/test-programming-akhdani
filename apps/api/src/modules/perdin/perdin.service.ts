@@ -1,68 +1,71 @@
-import { PerdinRepository } from "./perdin.repository";
-import { Perdin, City, PerdinStatus, Prisma } from "../../generated/prisma/client";
-import { prisma } from "../../common/prisma";
-import { calculateDistance } from "../../common/utils/distance.util";
+import { PerdinRepository } from './perdin.repository'
+import { Perdin, City, PerdinStatus, Prisma } from '../../generated/prisma/client'
+import { prisma } from '../../common/prisma'
+import { calculateDistance } from '../../common/utils/distance.util'
 
 export class PerdinService {
-  private perdinRepository: PerdinRepository;
+  private perdinRepository: PerdinRepository
 
   constructor() {
-    this.perdinRepository = new PerdinRepository();
+    this.perdinRepository = new PerdinRepository()
   }
 
   private calculateDailyAllowance(distance: number, origin: City, dest: City): number {
     // Rule 1: 0-60 km -> Rp 0
     if (distance <= 60) {
-      return 0;
+      return 0
     }
 
     // Rule 5: Perdin Luar Negeri -> USD 50
     // Note: Assuming we store as 50 (numeric) for now. UI should handle currency display.
     if (dest.isOverseas) {
-      return 50;
+      return 50
     }
 
     // Rule 2: >60 km, Same Province -> Rp 200.000
     if (origin.province === dest.province) {
-      return 200000;
+      return 200000
     }
 
     // Rule 3: >60 km, Different Province, Same Island -> Rp 250.000
     if (origin.island === dest.island) {
-      return 250000;
+      return 250000
     }
 
     // Rule 4: >60 km, Different Island -> Rp 300.000
-    return 300000;
+    return 300000
   }
 
-  async createPerdin(userId: string, data: {
-    purpose: string;
-    startDate: string; // ISO Date string
-    endDate: string;   // ISO Date string
-    originCityId: string;
-    destCityId: string;
-  }): Promise<Perdin> {
-    const originCity = await prisma.city.findUnique({ where: { id: data.originCityId } });
-    const destCity = await prisma.city.findUnique({ where: { id: data.destCityId } });
+  async createPerdin(
+    userId: string,
+    data: {
+      purpose: string
+      startDate: string // ISO Date string
+      endDate: string // ISO Date string
+      originCityId: string
+      destCityId: string
+    }
+  ): Promise<Perdin> {
+    const originCity = await prisma.city.findUnique({ where: { id: data.originCityId } })
+    const destCity = await prisma.city.findUnique({ where: { id: data.destCityId } })
 
     if (!originCity || !destCity) {
-      throw new Error("Origin or Destination City not found");
+      throw new Error('Origin or Destination City not found')
     }
 
     if (data.originCityId === data.destCityId) {
-      throw new Error("Origin and Destination City cannot be the same");
+      throw new Error('Origin and Destination City cannot be the same')
     }
 
     // Calculate Duration
-    const start = new Date(data.startDate);
-    const end = new Date(data.endDate);
+    const start = new Date(data.startDate)
+    const end = new Date(data.endDate)
 
     if (end < start) {
-      throw new Error("End date cannot be before start date");
+      throw new Error('End date cannot be before start date')
     }
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Inclusive count
+    const diffTime = Math.abs(end.getTime() - start.getTime())
+    const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1 // Inclusive count
 
     // Calculate Distance
     const distance = calculateDistance(
@@ -70,11 +73,11 @@ export class PerdinService {
       originCity.longitude,
       destCity.latitude,
       destCity.longitude
-    );
+    )
 
     // Calculate Allowance
-    const dailyAllowance = this.calculateDailyAllowance(distance, originCity, destCity);
-    const totalAllowance = dailyAllowance * totalDays;
+    const dailyAllowance = this.calculateDailyAllowance(distance, originCity, destCity)
+    const totalAllowance = dailyAllowance * totalDays
 
     return this.perdinRepository.create({
       purpose: data.purpose,
@@ -86,23 +89,23 @@ export class PerdinService {
       user: { connect: { id: userId } },
       originCity: { connect: { id: data.originCityId } },
       destCity: { connect: { id: data.destCityId } },
-      status: 'PENDING'
-    });
+      status: 'PENDING',
+    })
   }
 
   async getAllPerdins(userId: string, role: string): Promise<Perdin[]> {
-    let where: Prisma.PerdinWhereInput = {};
+    let where: Prisma.PerdinWhereInput = {}
 
     if (role === 'PEGAWAI') {
-      where = { userId };
+      where = { userId }
     }
     // SDM sees all (or pending?) - PRD says "Daftar Perdin untuk Diproses (SDM)".
     // For now, let SDM see all. We can add status filter later if needed.
 
-    return this.perdinRepository.findAll(where);
+    return this.perdinRepository.findAll(where)
   }
 
   async updatePerdinStatus(id: string, status: PerdinStatus): Promise<Perdin> {
-    return this.perdinRepository.update(id, { status });
+    return this.perdinRepository.update(id, { status })
   }
 }

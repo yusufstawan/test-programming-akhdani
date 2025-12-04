@@ -1,14 +1,14 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
 
 interface FetchOptions extends RequestInit {
   headers?: Record<string, string>
 }
 
 export const api = async (endpoint: string, options: FetchOptions = {}) => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
   const headers = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     ...(token && { Authorization: `Bearer ${token}` }),
     ...options.headers,
   }

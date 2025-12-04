@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export default function LandingPage() {
   return (
@@ -9,7 +9,8 @@ export default function LandingPage() {
           Sistem Informasi Perjalanan Dinas
         </h1>
         <p className="text-xl text-gray-600">
-          Kelola pengajuan, persetujuan, dan pelaporan perjalanan dinas pegawai dengan mudah dan efisien.
+          Kelola pengajuan, persetujuan, dan pelaporan perjalanan dinas pegawai dengan mudah dan
+          efisien.
         </p>
         <div className="flex justify-center gap-4 pt-4">
           <Link href="/login">
@@ -19,7 +20,7 @@ export default function LandingPage() {
           </Link>
         </div>
       </div>
-      
+
       <footer className="absolute bottom-4 text-sm text-gray-400">
         &copy; {new Date().getFullYear()} Test Programming Akhdani. All rights reserved.
       </footer>
