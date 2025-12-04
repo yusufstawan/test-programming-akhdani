@@ -18,6 +18,8 @@ Install dependencies from the root directory:
 pnpm install
 ```
 
+> **Note**: This will automatically generate the Prisma Client via a `postinstall` script.
+
 ## Environment Setup
 
 Copy the example environment files to create your local configuration:
@@ -82,7 +84,27 @@ pnpm dev
 - **API**: [http://localhost:8080](http://localhost:8080)
 - **Web**: [http://localhost:3000](http://localhost:3000)
 
+## Database Management
+
+To view and manage data directly in the database, you can use **Prisma Studio**:
+
+```bash
+pnpm --filter api prisma:studio
+```
+
+This will open a web interface at [http://localhost:51212](http://localhost:51212).
+
 ## Project Structure
 
 - **`apps/api`**: Backend application built with Express and Prisma.
 - **`apps/web`**: Frontend application built with Next.js and shadcn/ui.
+
+## Troubleshooting
+
+### Prisma Client Not Found
+
+If you encounter `Error [ERR_MODULE_NOT_FOUND]` related to `generated/prisma/client`, it means the Prisma Client hasn't been generated yet. This should happen automatically during `pnpm install`, but you can run it manually:
+
+```bash
+pnpm --filter api prisma:generate
+```
