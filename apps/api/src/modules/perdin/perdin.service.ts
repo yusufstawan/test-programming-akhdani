@@ -12,7 +12,7 @@ export class PerdinService {
 
   private calculateDailyAllowance(distance: number, origin: City, dest: City): number {
     // Rule 5: Perdin Luar Negeri -> USD 50
-    // Note: Assuming we store as 50 (numeric) for now. UI should handle currency display.
+    // Note: store as 50 (numeric) for now. UI should handle currency display.
     if (dest.isOverseas) {
       return 50
     }
@@ -99,8 +99,6 @@ export class PerdinService {
     if (role === 'PEGAWAI') {
       where = { userId }
     }
-    // SDM sees all (or pending?) - PRD says "Daftar Perdin untuk Diproses (SDM)".
-    // For now, let SDM see all. We can add status filter later if needed.
 
     return this.perdinRepository.findAll(where)
   }

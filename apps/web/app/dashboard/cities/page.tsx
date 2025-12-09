@@ -261,11 +261,7 @@ export default function CitiesPage() {
                     <Button variant="outline" size="sm" onClick={() => handleOpenDialog(city)}>
                       Ubah
                     </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDelete(city.id)}
-                    >
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete(city.id)}>
                       Hapus
                     </Button>
                   </TableCell>

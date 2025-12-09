@@ -12,7 +12,9 @@ export class AuthService {
     this.userRepository = new UserRepository()
   }
 
-  async register(data: Prisma.UserCreateInput): Promise<{ user: User; token: string }> {
+  async register(
+    data: Prisma.UserCreateInput
+  ): Promise<{ user: Omit<User, 'password'>; token: string }> {
     const existingUser = await this.userRepository.findByUsername(data.username)
     if (existingUser) {
       throw new Error('Username already exists')
@@ -25,12 +27,12 @@ export class AuthService {
     })
 
     const token = this.generateToken(user)
-    return { user, token }
+    return { user: this.excludePassword(user), token }
   }
 
   async login(
     data: Pick<Prisma.UserCreateInput, 'username' | 'password'>
-  ): Promise<{ user: User; token: string }> {
+  ): Promise<{ user: Omit<User, 'password'>; token: string }> {
     const user = await this.userRepository.findByUsername(data.username)
     if (!user) {
       throw new Error('Invalid credentials')
@@ -42,7 +44,12 @@ export class AuthService {
     }
 
     const token = this.generateToken(user)
-    return { user, token }
+    return { user: this.excludePassword(user), token }
+  }
+
+  private excludePassword(user: User): Omit<User, 'password'> {
+    const { password, ...userWithoutPassword } = user
+    return userWithoutPassword
   }
 
   private generateToken(user: User): string {

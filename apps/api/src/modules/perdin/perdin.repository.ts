@@ -12,7 +12,15 @@ export class PerdinRepository {
     return prisma.perdin.findUnique({
       where: { id },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            role: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
         originCity: true,
         destCity: true,
       },
@@ -23,7 +31,15 @@ export class PerdinRepository {
     return prisma.perdin.findMany({
       where,
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            role: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
         originCity: true,
         destCity: true,
       },
@@ -38,7 +54,15 @@ export class PerdinRepository {
       where: { id },
       data,
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            role: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
         originCity: true,
         destCity: true,
       },

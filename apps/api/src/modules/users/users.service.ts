@@ -1,6 +1,8 @@
 import { UserRepository } from './users.repository'
 import { Prisma, User } from '../../generated/prisma/client'
 
+type SafeUser = Omit<User, 'password'>
+
 export class UserService {
   private userRepository: UserRepository
 
@@ -12,16 +14,15 @@ export class UserService {
     return this.userRepository.create(data)
   }
 
-  async getUserById(id: string): Promise<User | null> {
+  async getUserById(id: string): Promise<SafeUser | null> {
     return this.userRepository.findById(id)
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(): Promise<SafeUser[]> {
     return this.userRepository.findAll()
   }
 
-  async updateUserRole(id: string, role: string): Promise<User> {
-    // Cast string to Role enum, validation should be done in controller or here
+  async updateUserRole(id: string, role: string): Promise<SafeUser> {
     return this.userRepository.updateRole(id, role as any)
   }
 }
