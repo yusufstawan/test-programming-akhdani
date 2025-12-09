@@ -18,13 +18,15 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   jwt.verify(token, JWT_SECRET, (err: any, decoded: any) => {
     if (err) return res.sendStatus(403)
     ;(req as any).user = decoded as User
+    // console.log('User:', req.user)
     next()
   })
 }
 
 export const requireRole = (roles: Role[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user || !roles.includes(req.user.role)) {
+    const user = (req as any).user
+    if (!user || !roles.includes(user.role)) {
       res.status(403).json({ message: 'Forbidden: Insufficient permissions' })
       return
     }
