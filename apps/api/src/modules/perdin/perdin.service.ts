@@ -23,12 +23,12 @@ export class PerdinService {
     }
 
     // Rule 2: >60 km, Same Province -> Rp 200.000
-    if (origin.province === dest.province) {
+    if (origin.province.toLowerCase() === dest.province.toLowerCase()) {
       return 200000
     }
 
     // Rule 3: >60 km, Different Province, Same Island -> Rp 250.000
-    if (origin.island === dest.island) {
+    if (origin.island.toLowerCase() === dest.island.toLowerCase()) {
       return 250000
     }
 
@@ -66,6 +66,23 @@ export class PerdinService {
     }
     const diffTime = Math.abs(end.getTime() - start.getTime())
     const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1 // Inclusive count
+
+    // Check for overlapping Perdin requests
+    const overlappingPerdins = await prisma.perdin.findMany({
+      where: {
+        userId,
+        AND: [{ startDate: { lte: end } }, { endDate: { gte: start } }],
+      },
+    })
+
+    // Check if any overlapping Perdin is not REJECTED
+    const hasActiveOverlap = overlappingPerdins.some((perdin) => perdin.status !== 'REJECTED')
+
+    if (hasActiveOverlap) {
+      throw new Error(
+        'Anda sudah memiliki perjalanan dinas pada tanggal yang sama. Tidak dapat membuat perjalanan dinas baru kecuali pengajuan sebelumnya ditolak.'
+      )
+    }
 
     // Calculate Distance
     const distance = calculateDistance(
