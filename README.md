@@ -113,3 +113,9 @@ If you encounter `Error [ERR_MODULE_NOT_FOUND]` related to `generated/prisma/cli
 ```bash
 pnpm --filter api prisma:generate
 ```
+
+## Support
+
+If you find this project useful, you can support the developer via Saweria:
+
+[![Saweria](https://img.shields.io/badge/Saweria-Support%20Me-orange?style=for-the-badge&logo=ko-fi&logoColor=white)](https://saweria.co/yusufstawan)
