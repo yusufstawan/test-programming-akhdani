@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import AuthGuard from '@/components/auth-guard'
-import { City } from '@repo/types'
+import { City } from '@perdinpro/types'
 
 export default function CitiesPage() {
   const [cities, setCities] = useState<City[]>([])

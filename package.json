@@ -1,5 +1,5 @@
 {
-  "name": "test-programming-akhdani",
+  "name": "perdinpro",
   "private": true,
   "scripts": {
     "build": "turbo run build",

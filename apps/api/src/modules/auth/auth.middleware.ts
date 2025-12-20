@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import { User } from '@repo/types'
+import { User } from '@perdinpro/types'
 
 import { Role } from '../../generated/prisma/client'
 

@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import { City } from '@repo/types'
+import { City } from '@perdinpro/types'
 
 import { ArrowLeft } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'

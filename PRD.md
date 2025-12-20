@@ -1,12 +1,12 @@
 # Product Requirements Document (PRD)
 
-## Aplikasi Pengelolaan Perjalanan Dinas (Perdin)
+## Aplikasi PerdinPro (Sistem Pengelolaan Perjalanan Dinas)
 
 ---
 
 # 1. Ringkasan Produk
 
-Aplikasi Pengelolaan Perjalanan Dinas (Perdin) digunakan untuk mengajukan, mengelola, menghitung, dan memproses perjalanan dinas pegawai.  
+Aplikasi PerdinPro (Sistem Pengelolaan Perjalanan Dinas) digunakan untuk mengajukan, mengelola, menghitung, dan memproses perjalanan dinas pegawai.  
 Termasuk pengajuan oleh pegawai, perhitungan otomatis uang saku berdasarkan jarak, serta approval oleh Divisi SDM.
 
 ---

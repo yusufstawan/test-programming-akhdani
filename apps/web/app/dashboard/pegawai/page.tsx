@@ -15,7 +15,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import AuthGuard from '@/components/auth-guard'
-import { Perdin } from '@repo/types'
+import { Perdin } from '@perdinpro/types'
 
 export default function PegawaiDashboard() {
   const [perdins, setPerdins] = useState<Perdin[]>([])

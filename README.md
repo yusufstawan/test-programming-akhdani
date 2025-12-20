@@ -1,4 +1,4 @@
-# Perdin App (Sistem Informasi Perjalanan Dinas)
+# PerdinPro (Sistem Informasi Perjalanan Dinas)
 
 This project is a monorepo managed by [Turborepo](https://turbo.build/repo). It contains the backend API and frontend Web application for managing official business trips (Perjalanan Dinas).
 

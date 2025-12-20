@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import AuthGuard from '@/components/auth-guard'
-import { User } from '@repo/types'
+import { User } from '@perdinpro/types'
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState<User[]>([])

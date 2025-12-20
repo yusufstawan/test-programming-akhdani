@@ -1,5 +1,6 @@
 services:
   api:
+    container_name: perdinpro_api
     build:
       context: .
       dockerfile: apps/api/Dockerfile
@@ -18,7 +19,7 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    container_name: postgres_prod
+    container_name: perdinpro_db_prod
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
