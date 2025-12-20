@@ -47,17 +47,17 @@ export default function SDMDashboard() {
 
       if (res.ok) {
         fetchPerdins() // Refresh list
-        toast.success('Status updated successfully')
+        toast.success('Status berhasil diperbarui')
       } else {
-        toast.error('Gagal update status')
+        toast.error('Gagal memperbarui status')
       }
     } catch (error) {
       console.error(error)
-      toast.error('Error updating status')
+      toast.error('Terjadi kesalahan saat memperbarui status')
     }
   }
 
-  if (loading) return <div>Loading data...</div>
+  if (loading) return <div>Memuat data...</div>
 
   return (
     <AuthGuard allowedRoles={['SDM', 'ADMIN']}>
@@ -119,7 +119,11 @@ export default function SDMDashboard() {
                               : 'bg-yellow-100 text-yellow-800'
                         }`}
                       >
-                        {perdin.status}
+                        {perdin.status === 'APPROVED'
+                          ? 'Disetujui'
+                          : perdin.status === 'REJECTED'
+                            ? 'Ditolak'
+                            : 'Menunggu Persetujuan'}
                       </span>
                     </TableCell>
                     <TableCell className="text-right">
@@ -131,7 +135,7 @@ export default function SDMDashboard() {
                             className="text-green-600 border-green-200 hover:bg-green-50"
                             onClick={() => handleStatusUpdate(perdin.id, 'APPROVED')}
                           >
-                            Approve
+                            Setujui
                           </Button>
                           <Button
                             size="sm"
@@ -139,7 +143,7 @@ export default function SDMDashboard() {
                             className="text-red-600 border-red-200 hover:bg-red-50"
                             onClick={() => handleStatusUpdate(perdin.id, 'REJECTED')}
                           >
-                            Reject
+                            Tolak
                           </Button>
                         </div>
                       )}

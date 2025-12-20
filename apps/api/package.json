@@ -1,9 +1,10 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "type": "module",
+  "author": "yusufstawan",
+  "license": "MIT",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "npm run prisma:generate && tsc",
@@ -19,8 +20,6 @@
     "seed": "tsx prisma/seed.ts"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@prisma/adapter-pg": "^7.0.1",
     "@prisma/client": "^7.0.1",

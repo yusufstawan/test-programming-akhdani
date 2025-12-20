@@ -39,7 +39,7 @@ export default function PegawaiDashboard() {
     fetchPerdins()
   }, [])
 
-  if (loading) return <div>Loading data...</div>
+  if (loading) return <div>Memuat data...</div>
 
   return (
     <AuthGuard allowedRoles={['PEGAWAI', 'SDM', 'ADMIN']}>
@@ -49,7 +49,7 @@ export default function PegawaiDashboard() {
           <Link href="/dashboard/pegawai/create">
             <Button>
               <PlusCircle className="mr-2 h-4 w-4" />
-              Ajukan Perdin
+              Buat Pengajuan Baru
             </Button>
           </Link>
         </div>
@@ -104,7 +104,11 @@ export default function PegawaiDashboard() {
                               : 'bg-yellow-100 text-yellow-800'
                         }`}
                       >
-                        {perdin.status}
+                        {perdin.status === 'APPROVED'
+                          ? 'Disetujui'
+                          : perdin.status === 'REJECTED'
+                            ? 'Ditolak'
+                            : 'Menunggu Persetujuan'}
                       </span>
                     </TableCell>
                     <TableCell className="text-right">

@@ -93,7 +93,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Building2 className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Perdin App</h2>
+          <h2 className="text-xl font-bold text-gray-900">PerdinPro</h2>
           <p className="text-xs text-gray-500">Sistem Manajemen</p>
         </div>
       </div>
@@ -161,7 +161,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="h-8 w-8 bg-primary rounded-md flex items-center justify-center">
             <Building2 className="h-5 w-5 text-white" />
           </div>
-          <span className="font-bold text-lg">Perdin App</span>
+          <span className="font-bold text-lg">PerdinPro</span>
         </div>
         <Sheet>
           <SheetTrigger asChild>

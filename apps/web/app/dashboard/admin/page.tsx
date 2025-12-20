@@ -52,17 +52,17 @@ export default function AdminDashboard() {
 
       if (res.ok) {
         fetchUsers() // Refresh list
-        toast.success('Role updated successfully')
+        toast.success('Peran berhasil diperbarui')
       } else {
-        toast.error('Failed to update role')
+        toast.error('Gagal memperbarui peran')
       }
     } catch (error) {
       console.error(error)
-      toast.error('Error updating role')
+      toast.error('Terjadi kesalahan saat memperbarui peran')
     }
   }
 
-  if (loading) return <div>Loading data...</div>
+  if (loading) return <div>Memuat data pengguna...</div>
 
   return (
     <AuthGuard allowedRoles={['ADMIN']}>
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
               <TableRow>
                 <TableHead>Username</TableHead>
                 <TableHead>Peran Saat Ini</TableHead>
-                <TableHead>Ubah Peran</TableHead>
+                <TableHead>Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

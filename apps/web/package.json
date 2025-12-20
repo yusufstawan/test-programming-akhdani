@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
+  "author": "yusufstawan",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",
@@ -13,16 +15,17 @@
     "next:upgrade": "next upgrade"
   },
   "dependencies": {
+    "@perdinpro/types": "workspace:*",
+    "@perdinpro/ui": "workspace:*",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
-    "@perdinpro/types": "workspace:*",
-    "@perdinpro/ui": "workspace:*",
     "@tailwindcss/postcss": "^4.1.17",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.23.26",
     "lucide-react": "^0.555.0",
     "next": "16.1.0",
     "next-themes": "^0.4.6",
